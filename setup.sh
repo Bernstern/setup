@@ -70,22 +70,12 @@ else
 	echo "${magenta}Gitkraken is already installed!${reset}"
 fi
 
-# Install python 3.10
-pyVersion="$(python3 -V)"
-if grep -q "3.10" <<< "$pyVersion"; then
-    echo "${green}Python version up to date!${reset}"
-else
-	sudo apt install software-properties-common -y
-	yes '' | sudo add-apt-repository ppa:deadsnakes/ppa
-	sudo apt install -y python3.10 python3.10-distutils python3.10-venv python3-pip python3-setuptools python3-pkg-resources
-	sudo apt remove --purge python3-apt -y
-	sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
-	sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 2
-fi
+# Install python dev dependencies
+sudo apt install -y python3-distutils python3.8-venv python3-pip python3-setuptools python3-pkg-resources
 
 # Install poetry for python
 curl -sSL https://install.python-poetry.org | python3 -
-set -ga fish_user_paths ~/.local/bin/
+set -U fish_user_paths ~/.local/bin/ $fish_user_paths
 
 # Install Jetbrains Stack - do this last because it has to be interactive :/
 read -p "${green}Do you want to install jetbrains (y/n)${reset}" -n 1 -r
@@ -96,7 +86,7 @@ then
 	echo "${green}Click the download link (I know this sucks, blame jetbrains)${reset}"
 	read -n 1
 
-	#google-chrome https://www.jetbrains.com/toolbox-app/download/download-thanks.html?platform=linux & 
+	google-chrome https://www.jetbrains.com/toolbox-app/download/download-thanks.html?platform=linux & 
 
 	echo "${red}Press any key when the download is complete...${reset}"
 	read -n 1
